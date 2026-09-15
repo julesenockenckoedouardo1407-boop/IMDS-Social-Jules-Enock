@@ -2,88 +2,89 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#176b45">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1b5e20">
+<meta name="description" content="IMDS Social Jules Enock v2.0">
 <link rel="manifest" href="manifest.json">
-<title>IMDS Social Jules Enock</title>
-<style>
-:root{--g:#176b45;--g2:#0f5135;--gold:#d8ad2f;--bg:#f4f7f5;--card:#fff;--text:#17231d;--muted:#6c7771}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
-header{position:sticky;top:0;z-index:5;background:var(--g);color:white;padding:13px 16px;box-shadow:0 2px 8px #0002}
-.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:12px;background:white;color:var(--g);display:grid;place-items:center;font-weight:900;border:3px solid var(--gold)}
-.brand b{display:block;font-size:17px}.brand small{opacity:.85}
-main{max-width:720px;margin:auto;padding:14px 12px 80px}
-.card{background:var(--card);border-radius:16px;margin:12px 0;padding:15px;box-shadow:0 2px 10px #0000000d}
-.composer{display:flex;gap:10px;align-items:center}.avatar{width:42px;height:42px;border-radius:50%;background:#e3efe9;display:grid;place-items:center;color:var(--g);font-weight:800}
-button{border:0;border-radius:10px;padding:10px 13px;background:var(--g);color:#fff;font-weight:700;cursor:pointer}
-button.secondary{background:#edf3ef;color:var(--g)}textarea,input,select{width:100%;border:1px solid #d7dfda;border-radius:10px;padding:11px;font:inherit}
-textarea{min-height:85px;resize:vertical}.hidden{display:none}.row{display:flex;gap:8px;align-items:center}.between{justify-content:space-between}
-.posthead{display:flex;gap:10px;align-items:center}.posthead strong{display:block}.posthead small{color:var(--muted)}
-.postbody{white-space:pre-wrap;line-height:1.45;margin:12px 0}.actions{display:flex;gap:8px;border-top:1px solid #edf0ee;padding-top:10px}
-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;display:flex;justify-content:center;z-index:10}
-nav button{flex:1;max-width:180px;background:white;color:#52605a;border-radius:0;padding:10px 5px;font-size:12px}nav button.active{color:var(--g);font-weight:900}
-.section-title{font-size:21px;margin:8px 0}.pill{display:inline-block;background:#eef5f0;color:var(--g);padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}
-.notice{border-left:4px solid var(--gold);background:#fffaf0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tile{padding:16px;border-radius:14px;background:#eef5f0;text-align:center;font-weight:800;color:var(--g)}
-@media(min-width:600px){main{padding-bottom:30px}nav{position:static;background:transparent;border:0}nav button{background:transparent}}
-</style>
+<title>IMDS Social Jules Enock v2.0</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><div class="brand"><div class="logo">IM</div><div><b>IMDS Social Jules Enock</b><small>La communauté numérique de l'IMDS</small></div></div></header>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">IMDS</div>
+      <div><strong>IMDS Social</strong><small>Jules Enock v2.0</small></div>
+    </div>
+    <button id="logoutBtn" class="ghost hidden">Déconnexion</button>
+  </header>
 
-<main>
-<section id="home">
-<div class="card composer"><div class="avatar">JE</div><button class="secondary" style="flex:1;text-align:left" onclick="toggleComposer()">Que voulez-vous publier ?</button></div>
-<div id="composer" class="card hidden">
-<textarea id="newPost" placeholder="Écrivez une publication..."></textarea>
-<div class="row between" style="margin-top:9px"><select id="audience" style="max-width:180px"><option>Communauté IMDS</option><option>Ma classe</option><option>Annonce</option></select><button onclick="publish()">Publier</button></div>
+  <main>
+    <section id="authView" class="view">
+      <div class="hero">
+        <h1>Bienvenue</h1>
+        <p>Institution Mixte Le Domaine du Savoir</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="login">Connexion</button>
+        <button class="tab" data-tab="register">Inscription</button>
+      </div>
+
+      <form id="loginForm" class="card form">
+        <label>Téléphone ou e-mail<input id="loginId" required autocomplete="username"></label>
+        <label>Mot de passe<input id="loginPassword" type="password" required autocomplete="current-password"></label>
+        <button class="primary">Se connecter</button>
+        <button type="button" id="demoBtn" class="secondary">Mode démonstration</button>
+      </form>
+
+      <form id="registerForm" class="card form hidden">
+        <label>Nom et prénom<input id="regName" required></label>
+        <label>Téléphone<input id="regPhone" required></label>
+        <label>E-mail<input id="regEmail" type="email"></label>
+        <label>Mot de passe<input id="regPassword" type="password" minlength="4" required></label>
+        <label>Rôle
+          <select id="regRole">
+            <option value="parent">Parent</option>
+            <option value="eleve">Élève</option>
+            <option value="professeur">Professeur</option>
+            <option value="direction">Direction</option>
+          </select>
+        </label>
+        <button class="primary">Créer mon compte</button>
+      </form>
+
+      <p id="authMsg" class="msg"></p>
+    </section>
+
+    <section id="dashboardView" class="view hidden">
+      <div class="welcome card">
+        <div>
+          <span class="eyebrow">TABLEAU DE BORD</span>
+          <h2 id="welcomeName">Bienvenue</h2>
+          <p id="roleLabel"></p>
+        </div>
+        <div id="roleBadge" class="badge"></div>
+      </div>
+
+      <div class="grid">
+        <button class="tile" data-module="profil">👤<b>Mon profil</b><small>Informations du compte</small></button>
+        <button class="tile" data-module="publications">📢<b>Publications</b><small>À venir</small></button>
+        <button class="tile" data-module="classes">📚<b>Classes</b><small>À venir</small></button>
+        <button class="tile" data-module="messages">💬<b>Messages</b><small>À venir</small></button>
+        <button class="tile" data-module="notifications">🔔<b>Notifications</b><small>À venir</small></button>
+        <button class="tile" data-module="sauvegarde">💾<b>Sauvegarde</b><small>Données locales</small></button>
+      </div>
+
+      <div id="content" class="card content">
+        <h3>IMDS Social v2.0</h3>
+        <p>Le cœur du système est prêt. Les modules en ligne seront ajoutés progressivement.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>Institution Mixte Le Domaine du Savoir — IMDS</footer>
 </div>
-<div class="card notice"><div class="row between"><b>📢 Bienvenue sur IMDS Social</b><span class="pill">Officiel</span></div><p>Un espace pour partager les nouvelles, activités et informations de l'Institution Mixte Le Domaine du Savoir.</p></div>
-<div id="feed"></div>
-</section>
-
-<section id="classes" class="hidden">
-<h2 class="section-title">🏫 Classes</h2>
-<div class="card"><p>Choisissez un espace de classe.</p><div class="grid">
-<div class="tile">1re AF</div><div class="tile">2e AF</div><div class="tile">3e AF</div><div class="tile">4e AF</div><div class="tile">5e AF</div><div class="tile">6e AF</div><div class="tile">7e AF</div><div class="tile">8e AF</div><div class="tile">9e AF</div></div></div>
-</section>
-
-<section id="profile" class="hidden">
-<h2 class="section-title">👤 Mon profil</h2>
-<div class="card"><div class="row"><div class="avatar" style="width:70px;height:70px;font-size:22px">JE</div><div><h3 style="margin:0">Jules Enock</h3><span class="pill">Membre IMDS</span></div></div><hr style="border:0;border-top:1px solid #eee;margin:15px 0"><p>Profil de démonstration — les comptes réels seront ajoutés dans une prochaine version.</p></div>
-</section>
-
-<section id="more" class="hidden">
-<h2 class="section-title">☰ Plus</h2>
-<div class="card"><div class="grid"><div class="tile">💬 Messages</div><div class="tile">📸 Médias</div><div class="tile">📅 Événements</div><div class="tile">🔔 Notifications</div></div></div>
-<div class="card"><b>Version 1.0</b><p style="color:var(--muted)">Prototype fonctionnel hors ligne.</p></div>
-</section>
-</main>
-
-<nav>
-<button class="active" onclick="show('home',this)">🏠<br>Accueil</button>
-<button onclick="show('classes',this)">🏫<br>Classes</button>
-<button onclick="show('profile',this)">👤<br>Profil</button>
-<button onclick="show('more',this)">☰<br>Plus</button>
-</nav>
-
-<script>
-const KEY='imds_social_posts_v1';
-let posts=JSON.parse(localStorage.getItem(KEY)||'[]');
-function toggleComposer(){document.getElementById('composer').classList.toggle('hidden')}
-function publish(){
- const t=document.getElementById('newPost').value.trim(); if(!t)return;
- posts.unshift({text:t,date:new Date().toLocaleString('fr-FR'),aud:document.getElementById('audience').value,likes:0});
- localStorage.setItem(KEY,JSON.stringify(posts));document.getElementById('newPost').value='';render();toggleComposer()
-}
-function like(i){posts[i].likes++;localStorage.setItem(KEY,JSON.stringify(posts));render()}
-function render(){
- const f=document.getElementById('feed');
- f.innerHTML=posts.length?'':'<div class="card"><b>📰 Votre fil est prêt.</b><p style="color:var(--muted)">Les nouvelles publications apparaîtront ici.</p></div>';
- posts.forEach((p,i)=>{f.innerHTML+=`<article class="card"><div class="posthead"><div class="avatar">JE</div><div><strong>Jules Enock</strong><small>${p.date} · ${p.aud}</small></div></div><div class="postbody">${esc(p.text)}</div><div class="actions"><button class="secondary" onclick="like(${i})">👍 ${p.likes}</button></div></article>`})
-}
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function show(id,btn){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');scrollTo(0,0)}
-if('serviceWorker'in navigator) navigator.serviceWorker.register('./sw.js');
-render();
-</script>
-</body></html>
+<script src="app.js"></script>
+</body>
+</html>
